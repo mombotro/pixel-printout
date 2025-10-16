@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analog Pixel Art Printout</title>
+    <link href="https://fonts.cdnfonts.com/css/thegoodmonolith" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'TheGoodMonolith', 'Courier New', monospace;
+            background: #667eea;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 3em;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .controls {
+            background: #ffffff;
+            padding: 15px 20px;
+            border-radius: 0;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .control-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+            margin-bottom: 0;
+        }
+
+        .control-grid .color-group {
+            gap: 8px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.5s ease-out;
+            flex: 0 0 auto;
+        }
+
+        label {
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #5a67d8;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="number"],
+        input[type="color"],
+        input[type="text"],
+        select {
+            padding: 8px;
+            border: 2px solid #e0e7ff;
+            border-radius: 0;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            background: white;
+            width: 100%;
+        }
+
+        input[type="number"] {
+            max-width: 70px;
+        }
+
+        input[type="color"] {
+            max-width: 70px;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input[type="color"] {
+            height: 35px;
+            cursor: pointer;
+            border-radius: 0;
+            transition: transform 0.2s ease;
+        }
+
+        input[type="color"]:hover {
+            transform: scale(1.05);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            margin-left: auto;
+        }
+
+        button {
+            padding: 8px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            border: none;
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            height: 35px;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f093fb;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #e77fea;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #fa709a;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #f85c88;
+            transform: translateY(-2px);
+        }
+
+        .canvas-container {
+            background: white;
+            padding: 25px;
+            border-radius: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        canvas {
+            border: 3px solid #e0e7ff;
+            max-width: 100%;
+            height: auto;
+            border-radius: 0;
+        }
+
+        .info {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #ffc9e0;
+            border-radius: 0;
+            font-size: 12px;
+            color: #2d1b3d;
+        }
+
+        .info strong {
+            color: #c2185b;
+            font-weight: 800;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            color: white;
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: #fee140;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            .controls, .info, .header, .footer {
+                display: none;
+            }
+            .container {
+                max-width: 100%;
+                margin: 0;
+            }
+            .canvas-container {
+                padding: 0;
+                box-shadow: none;
+                min-height: 0;
+                page-break-after: avoid;
+            }
+            canvas {
+                border: none;
+                display: block;
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Analog Pixel Art Printout</h1>
+            <p>Create custom grid paper with adjustable size, spacing, and colors</p>
+        </div>
+
+        <div class="controls">
+            <div class="control-grid">
+                <div class="control-group">
+                    <label for="gridTemplate">Grid Template</label>
+                    <select id="gridTemplate">
+                        <option value="8">8 × 8</option>
+                        <option value="16" selected>16 × 16</option>
+                        <option value="32">32 × 32</option>
+                        <option value="64">64 × 64</option>
+                        <option value="128">128 × 128</option>
+                        <option value="256">256 × 256</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+
+                <div class="control-group" id="customGridWidthGroup" style="display: none;">
+                    <label for="customGridWidth">Grid Width (cells)</label>
+                    <input type="number" id="customGridWidth" value="16" min="1" max="512" step="1">
+                </div>
+
+                <div class="control-group" id="customGridHeightGroup" style="display: none;">
+                    <label for="customGridHeight">Grid Height (cells)</label>
+                    <input type="number" id="customGridHeight" value="16" min="1" max="512" step="1">
+                </div>
+
+                <div class="control-group">
+                    <label for="paperSize">Paper Size</label>
+                    <select id="paperSize">
+                        <option value="letter">Letter (8.5" × 11")</option>
+                        <option value="statement">Statement (5.5" × 8.5")</option>
+                        <option value="a4">A4 (210mm × 297mm)</option>
+                        <option value="legal">Legal (8.5" × 14")</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="margin">Margin (in)</label>
+                    <input type="number" id="margin" value="0.5" min="0" max="2" step="0.125">
+                </div>
+
+                <div class="control-group">
+                    <label for="dpi">DPI</label>
+                    <input type="number" id="dpi" value="150" min="72" max="300" step="1">
+                </div>
+
+                <div class="control-group">
+                    <label for="lineWidth">Line Width (px)</label>
+                    <input type="number" id="lineWidth" value="1" min="0.5" max="10" step="0.5">
+                </div>
+
+                <div class="control-group" style="margin-right: 5px;">
+                    <label for="lineColor">Line Color</label>
+                    <input type="color" id="lineColor" value="#cccccc">
+                </div>
+
+                <div class="control-group">
+                    <label for="bgColor">BKG Color</label>
+                    <input type="color" id="bgColor" value="#ffffff">
+                </div>
+
+                <div class="control-group">
+                    <label for="customText">Header Text</label>
+                    <input type="text" id="customText" value="Analog Pixel Art" style="max-width: 150px;">
+                </div>
+
+                <div class="control-group" id="customWidthGroup" style="display: none;">
+                    <label for="customWidth">Custom Width (inches)</label>
+                    <input type="number" id="customWidth" value="8.5" min="1" max="24" step="0.5">
+                </div>
+
+                <div class="control-group" id="customHeightGroup" style="display: none;">
+                    <label for="customHeight">Custom Height (inches)</label>
+                    <input type="number" id="customHeight" value="11" min="1" max="36" step="0.5">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="generateGrid()">Refresh</button>
+                    <button class="btn-secondary" onclick="downloadGrid()">Download PNG</button>
+                    <button class="btn-secondary" onclick="printGrid()">Print</button>
+                    <button class="btn-danger" onclick="clearGrid()">Clear</button>
+                </div>
+            </div>
+
+            <div class="info">
+                <strong>Tip:</strong> Select a grid template (8×8 to 256×256) and it will automatically fit to your chosen paper size with margins.
+                The pixel size adjusts dynamically to fit the grid on the page. Higher DPI values produce better print quality.
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="gridCanvas"></canvas>
+        </div>
+
+        <div class="footer">
+            A tool from the Azirona Drift - <a href="https://azirona.com" target="_blank">azirona.com</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gridCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Load watermark image
+        const watermarkImg = new Image();
+        watermarkImg.src = 'watermark.webp';
+
+        // Paper size presets (in inches, converted to pixels based on DPI)
+        const paperSizes = {
+            letter: { width: 8.5, height: 11 },
+            statement: { width: 5.5, height: 8.5 },
+            a4: { width: 8.27, height: 11.69 },
+            legal: { width: 8.5, height: 14 },
+            custom: { width: 8.5, height: 11 }
+        };
+
+        // Show/hide custom dimension inputs for paper size
+        document.getElementById('paperSize').addEventListener('change', function() {
+            const isCustom = this.value === 'custom';
+            document.getElementById('customWidthGroup').style.display = isCustom ? 'flex' : 'none';
+            document.getElementById('customHeightGroup').style.display = isCustom ? 'flex' : 'none';
+            generateGrid();
+        });
+
+        // Show/hide custom grid dimension inputs
+        document.getElementById('gridTemplate').addEventListener('change', function() {
+            const isCustom = this.value === 'custom';
+            document.getElementById('customGridWidthGroup').style.display = isCustom ? 'flex' : 'none';
+            document.getElementById('customGridHeightGroup').style.display = isCustom ? 'flex' : 'none';
+            generateGrid();
+        });
+
+        // Auto-generate on input change
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('change', generateGrid);
+        });
+
+        function generateGrid() {
+            const gridTemplateValue = document.getElementById('gridTemplate').value;
+            const lineWidth = parseFloat(document.getElementById('lineWidth').value);
+            const lineColor = document.getElementById('lineColor').value;
+            const bgColor = document.getElementById('bgColor').value;
+            const paperSize = document.getElementById('paperSize').value;
+            const dpi = parseInt(document.getElementById('dpi').value);
+            const margin = parseFloat(document.getElementById('margin').value);
+            const customText = document.getElementById('customText').value;
+
+            let gridWidth, gridHeight;
+
+            // Get grid dimensions (cells)
+            if (gridTemplateValue === 'custom') {
+                gridWidth = parseInt(document.getElementById('customGridWidth').value);
+                gridHeight = parseInt(document.getElementById('customGridHeight').value);
+            } else {
+                gridWidth = parseInt(gridTemplateValue);
+                gridHeight = parseInt(gridTemplateValue);
+            }
+
+            let paperWidth, paperHeight;
+
+            // Get paper dimensions in inches
+            if (paperSize === 'custom') {
+                paperWidth = parseFloat(document.getElementById('customWidth').value);
+                paperHeight = parseFloat(document.getElementById('customHeight').value);
+            } else {
+                const size = paperSizes[paperSize];
+                paperWidth = size.width;
+                paperHeight = size.height;
+            }
+
+            // Calculate canvas dimensions in pixels
+            const canvasWidth = Math.floor(paperWidth * dpi);
+            const canvasHeight = Math.floor(paperHeight * dpi);
+
+            // Calculate margin in pixels
+            const marginPx = Math.floor(margin * dpi);
+
+            // Reserve space for name/date lines at top (0.2 inches - closer to grid)
+            const headerSpacePx = Math.floor(0.2 * dpi);
+
+            // Calculate available space for grid (excluding margins and header)
+            const gridAreaWidth = canvasWidth - (2 * marginPx);
+            const gridAreaHeight = canvasHeight - (2 * marginPx) - headerSpacePx;
+
+            // Calculate pixel size to fit the grid template in available space
+            const pixelSizeWidth = gridAreaWidth / gridWidth;
+            const pixelSizeHeight = gridAreaHeight / gridHeight;
+
+            // Use the smaller dimension to ensure grid fits in both directions
+            const pixelSize = Math.min(pixelSizeWidth, pixelSizeHeight);
+
+            // Pixel size is calculated but not displayed anymore
+
+            // Calculate actual grid dimensions in pixels
+            const gridWidthPx = pixelSize * gridWidth;
+            const gridHeightPx = pixelSize * gridHeight;
+
+            // Calculate horizontal offset to center the grid
+            const offsetX = marginPx + (gridAreaWidth - gridWidthPx) / 2;
+
+            // Position grid at bottom (aligned with bottom margin)
+            const offsetY = canvasHeight - marginPx - gridHeightPx;
+
+            // Set canvas dimensions
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+
+            // Fill background
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+            // Draw header text and name/date lines at top
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 1;
+
+            // Draw custom header text centered at top with wrapping
+            ctx.font = `${Math.floor(42 * (dpi / 72))}px TheGoodMonolith, monospace`;
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'center';
+
+            // Calculate max width for text (leave margins)
+            const maxTextWidth = canvasWidth - (2 * marginPx);
+            const headerTextY = marginPx + Math.floor(0.45 * dpi);
+
+            // Check if text needs wrapping
+            const textMetrics = ctx.measureText(customText);
+            if (textMetrics.width > maxTextWidth) {
+                // Wrap text: split into words and create lines
+                const words = customText.split(' ');
+                let currentLine = '';
+                let lines = [];
+
+                for (let word of words) {
+                    const testLine = currentLine ? currentLine + ' ' + word : word;
+                    const testWidth = ctx.measureText(testLine).width;
+
+                    if (testWidth > maxTextWidth && currentLine) {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        currentLine = testLine;
+                    }
+                }
+                if (currentLine) lines.push(currentLine);
+
+                // Draw each line
+                const lineHeight = Math.floor(48 * (dpi / 72));
+                const startY = headerTextY - ((lines.length - 1) * lineHeight / 2);
+                lines.forEach((line, index) => {
+                    ctx.fillText(line, canvasWidth / 2, startY + (index * lineHeight));
+                });
+            } else {
+                ctx.fillText(customText, canvasWidth / 2, headerTextY);
+            }
+
+            // Reset text alignment for name/date
+            ctx.textAlign = 'left';
+            ctx.font = `${Math.floor(12 * (dpi / 72))}px TheGoodMonolith, monospace`;
+
+            const nameLineY = offsetY - Math.floor(0.5 * dpi);
+            const nameLineStartX = marginPx;
+            const nameLineEndX = marginPx + (gridAreaWidth * 0.55);
+            const dateTextStartX = marginPx + (gridAreaWidth * 0.62);
+            const dateLineStartX = marginPx + (gridAreaWidth * 0.75);
+            const dateLineEndX = marginPx + gridAreaWidth;
+
+            // Draw "Name:" line
+            ctx.beginPath();
+            ctx.moveTo(nameLineStartX, nameLineY);
+            ctx.lineTo(nameLineEndX, nameLineY);
+            ctx.stroke();
+
+            // Draw "Date:" text and line with spacing
+            const dateTextY = nameLineY + Math.floor(0.02 * dpi);
+            ctx.fillText('Date:', dateTextStartX, dateTextY);
+            ctx.beginPath();
+            ctx.moveTo(dateLineStartX, nameLineY);
+            ctx.lineTo(dateLineEndX, nameLineY);
+            ctx.stroke();
+
+            // Draw grid
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = lineWidth;
+            ctx.beginPath();
+
+            // Vertical lines
+            for (let i = 0; i <= gridWidth; i++) {
+                const x = offsetX + (i * pixelSize);
+                ctx.moveTo(x, offsetY);
+                ctx.lineTo(x, offsetY + gridHeightPx);
+            }
+
+            // Horizontal lines
+            for (let i = 0; i <= gridHeight; i++) {
+                const y = offsetY + (i * pixelSize);
+                ctx.moveTo(offsetX, y);
+                ctx.lineTo(offsetX + gridWidthPx, y);
+            }
+
+            ctx.stroke();
+
+            // Draw watermark image on left side of grid with low opacity
+            if (watermarkImg.complete) {
+                ctx.globalAlpha = 0.2;
+                const wmHeight = Math.floor(gridHeightPx * 0.2);
+                const wmWidth = Math.floor((watermarkImg.width / watermarkImg.height) * wmHeight);
+                const wmX = offsetX + Math.floor(0.2 * dpi);
+                const wmY = offsetY + (gridHeightPx - wmHeight);
+                ctx.drawImage(watermarkImg, wmX, wmY, wmWidth, wmHeight);
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        function downloadGrid() {
+            const link = document.createElement('a');
+            link.download = `grid-paper-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function printGrid() {
+            window.print();
+        }
+
+        function clearGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Generate initial grid on load and when watermark loads
+        watermarkImg.addEventListener('load', generateGrid);
+        window.addEventListener('load', generateGrid);
+    </script>
+</body>
+</html>
