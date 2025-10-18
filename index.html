@@ -14,7 +14,7 @@
 
         body {
             font-family: 'TheGoodMonolith', 'Courier New', monospace;
-            background: #667eea;
+            background: #f99d3f;
             padding: 20px;
             min-height: 100vh;
         }
@@ -72,7 +72,7 @@
         label {
             font-weight: 700;
             margin-bottom: 4px;
-            color: #5a67d8;
+            color: #d97706;
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -83,7 +83,7 @@
         input[type="text"],
         select {
             padding: 8px;
-            border: 2px solid #e0e7ff;
+            border: 2px solid #fed7aa;
             border-radius: 0;
             font-size: 13px;
             transition: all 0.3s ease;
@@ -103,7 +103,7 @@
         input[type="text"]:focus,
         select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #f97316;
         }
 
         input[type="color"] {
@@ -140,32 +140,32 @@
         }
 
         .btn-primary {
-            background: #667eea;
+            background: #ea580c;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #5568d3;
+            background: #c2410c;
             transform: translateY(-2px);
         }
 
         .btn-secondary {
-            background: #f093fb;
+            background: #fb923c;
             color: white;
         }
 
         .btn-secondary:hover {
-            background: #e77fea;
+            background: #f97316;
             transform: translateY(-2px);
         }
 
         .btn-danger {
-            background: #fa709a;
+            background: #dc2626;
             color: white;
         }
 
         .btn-danger:hover {
-            background: #f85c88;
+            background: #b91c1c;
             transform: translateY(-2px);
         }
 
@@ -181,7 +181,7 @@
         }
 
         canvas {
-            border: 3px solid #e0e7ff;
+            border: 3px solid #fed7aa;
             max-width: 100%;
             height: auto;
             border-radius: 0;
@@ -190,14 +190,14 @@
         .info {
             margin-top: 10px;
             padding: 10px 12px;
-            background: #ffc9e0;
+            background: #ffedd5;
             border-radius: 0;
             font-size: 12px;
-            color: #2d1b3d;
+            color: #431407;
         }
 
         .info strong {
-            color: #c2185b;
+            color: #c2410c;
             font-weight: 800;
         }
 
@@ -210,7 +210,7 @@
         }
 
         .footer a {
-            color: #fee140;
+            color: #fef3c7;
             text-decoration: none;
             font-weight: 700;
         }
@@ -297,7 +297,6 @@
                         <option value="32">32 × 32</option>
                         <option value="64">64 × 64</option>
                         <option value="128">128 × 128</option>
-                        <option value="256">256 × 256</option>
                         <option value="custom">Custom</option>
                     </select>
                 </div>
@@ -329,18 +328,13 @@
                 </div>
 
                 <div class="control-group">
-                    <label for="dpi">DPI</label>
-                    <input type="number" id="dpi" value="150" min="72" max="300" step="1">
-                </div>
-
-                <div class="control-group">
                     <label for="lineWidth">Line Width (px)</label>
-                    <input type="number" id="lineWidth" value="1" min="0.5" max="10" step="0.5">
+                    <input type="number" id="lineWidth" value="2" min="0.5" max="10" step="0.5">
                 </div>
 
                 <div class="control-group" style="margin-right: 5px;">
                     <label for="lineColor">Line Color</label>
-                    <input type="color" id="lineColor" value="#cccccc">
+                    <input type="color" id="lineColor" value="#808080">
                 </div>
 
                 <div class="control-group">
@@ -351,6 +345,16 @@
                 <div class="control-group">
                     <label for="customText">Header Text</label>
                     <input type="text" id="customText" value="Analog Pixel Art" maxlength="30" style="max-width: 150px;">
+                </div>
+
+                <div class="control-group">
+                    <label for="showPalette">Color Palette</label>
+                    <input type="checkbox" id="showPalette" style="width: auto; height: 20px; cursor: pointer;">
+                </div>
+
+                <div class="control-group" id="paletteCountGroup" style="display: none;">
+                    <label for="paletteCount"># of Colors</label>
+                    <input type="number" id="paletteCount" value="4" min="2" max="12" step="1">
                 </div>
 
                 <div class="control-group" id="customWidthGroup" style="display: none;">
@@ -372,8 +376,8 @@
             </div>
 
             <div class="info">
-                <strong>Tip:</strong> Select a grid template (8×8 to 256×256) and it will automatically fit to your chosen paper size with margins.
-                The pixel size adjusts dynamically to fit the grid on the page. Higher DPI values produce better print quality.
+                <strong>Tip:</strong> Select a grid template (8×8 to 128×128) and it will automatically fit to your chosen paper size with margins.
+                The pixel size adjusts dynamically to fit the grid on the page. All grids are rendered at 300 DPI for optimal print quality.
             </div>
         </div>
 
@@ -419,6 +423,13 @@
             generateGrid();
         });
 
+        // Show/hide palette count input
+        document.getElementById('showPalette').addEventListener('change', function() {
+            const isChecked = this.checked;
+            document.getElementById('paletteCountGroup').style.display = isChecked ? 'flex' : 'none';
+            generateGrid();
+        });
+
         // Auto-generate on input change
         const inputs = document.querySelectorAll('input, select');
         inputs.forEach(input => {
@@ -431,9 +442,11 @@
             const lineColor = document.getElementById('lineColor').value;
             const bgColor = document.getElementById('bgColor').value;
             const paperSize = document.getElementById('paperSize').value;
-            const dpi = parseInt(document.getElementById('dpi').value);
+            const dpi = 300;
             const margin = parseFloat(document.getElementById('margin').value);
             const customText = document.getElementById('customText').value;
+            const showPalette = document.getElementById('showPalette').checked;
+            const paletteCount = parseInt(document.getElementById('paletteCount').value);
 
             let gridWidth, gridHeight;
 
@@ -589,15 +602,51 @@
 
             ctx.stroke();
 
-            // Draw watermark image on left side of grid with low opacity
-            if (watermarkImg.complete) {
-                ctx.globalAlpha = 0.2;
-                const wmHeight = Math.floor(gridHeightPx * 0.2);
-                const wmWidth = Math.floor((watermarkImg.width / watermarkImg.height) * wmHeight);
-                const wmX = offsetX + Math.floor(0.2 * dpi);
-                const wmY = offsetY + (gridHeightPx - wmHeight);
-                ctx.drawImage(watermarkImg, wmX, wmY, wmWidth, wmHeight);
-                ctx.globalAlpha = 1.0;
+            // Draw grid dimensions text above the grid on the left
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'left';
+            ctx.font = `${Math.floor(12 * (dpi / 72))}px TheGoodMonolith, monospace`;
+            const dimensionsText = `${gridWidth} × ${gridHeight}`;
+            const dimensionsX = offsetX + Math.floor(0.1 * dpi);
+            const dimensionsY = offsetY - Math.floor(0.1 * dpi);
+            ctx.fillText(dimensionsText, dimensionsX, dimensionsY);
+
+            // Draw watermark text above the grid on the right side
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'right';
+            ctx.font = `${Math.floor(10 * (dpi / 72))}px TheGoodMonolith, monospace`;
+            const watermarkText = 'https://azirona.com/pixel-printout/';
+            const watermarkX = offsetX + gridWidthPx;
+            const watermarkY = offsetY - Math.floor(0.1 * dpi);
+            ctx.fillText(watermarkText, watermarkX, watermarkY);
+
+            // Draw color palette if enabled (above grid, below title)
+            if (showPalette) {
+                ctx.fillStyle = '#000000';
+                ctx.textAlign = 'left';
+                ctx.font = `${Math.floor(12 * (dpi / 72))}px TheGoodMonolith, monospace`;
+
+                const paletteY = nameLineY - Math.floor(0.7 * dpi);
+                const paletteBoxSize = Math.floor(0.35 * dpi);
+                const paletteBoxSpacing = Math.floor(0.1 * dpi);
+
+                // Draw "Color Palette:" label
+                ctx.fillText('Color Palette:', offsetX, paletteY);
+
+                // Calculate starting position for boxes (after label)
+                const labelWidth = ctx.measureText('Color Palette:').width;
+                const boxesStartX = offsetX + labelWidth + Math.floor(0.15 * dpi);
+
+                // Draw empty palette boxes
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 2;
+                for (let i = 0; i < paletteCount; i++) {
+                    const boxX = boxesStartX + (i * (paletteBoxSize + paletteBoxSpacing));
+                    const boxY = paletteY - paletteBoxSize + Math.floor(0.05 * dpi);
+
+                    // Draw box outline
+                    ctx.strokeRect(boxX, boxY, paletteBoxSize, paletteBoxSize);
+                }
             }
         }
 
