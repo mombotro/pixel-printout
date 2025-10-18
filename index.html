@@ -478,8 +478,15 @@
             // Calculate margin in pixels
             const marginPx = Math.floor(margin * dpi);
 
-            // Reserve space for name/date lines at top (0.2 inches - closer to grid)
-            const headerSpacePx = Math.floor(0.2 * dpi);
+            // Reserve space for header elements at top
+            // - Header text: ~0.45 inches from top margin
+            // - Space between header and name line: increased for writing
+            // - Name/Date lines: 0.5 inches above grid
+            // - Color palette (if shown): 0.7 inches above name line + 0.35 inches for boxes
+            const headerTextSpace = Math.floor(1.1 * dpi);  // Space for title (increased for more writing space)
+            const nameLineSpace = Math.floor(0.5 * dpi);    // Space for name/date lines above grid
+            const paletteSpace = showPalette ? Math.floor(1.2 * dpi) : 0;  // Space for palette if enabled
+            const headerSpacePx = headerTextSpace + nameLineSpace + paletteSpace;
 
             // Calculate available space for grid (excluding margins and header)
             const gridAreaWidth = canvasWidth - (2 * marginPx);
@@ -602,21 +609,21 @@
 
             ctx.stroke();
 
-            // Draw grid dimensions text above the grid on the left
+            // Draw grid dimensions text above the grid on the left (at page edge)
             ctx.fillStyle = '#000000';
             ctx.textAlign = 'left';
             ctx.font = `${Math.floor(12 * (dpi / 72))}px TheGoodMonolith, monospace`;
             const dimensionsText = `${gridWidth} × ${gridHeight}`;
-            const dimensionsX = offsetX + Math.floor(0.1 * dpi);
+            const dimensionsX = marginPx;
             const dimensionsY = offsetY - Math.floor(0.1 * dpi);
             ctx.fillText(dimensionsText, dimensionsX, dimensionsY);
 
-            // Draw watermark text above the grid on the right side
+            // Draw watermark text above the grid on the right side (at page edge)
             ctx.fillStyle = '#000000';
             ctx.textAlign = 'right';
             ctx.font = `${Math.floor(10 * (dpi / 72))}px TheGoodMonolith, monospace`;
             const watermarkText = 'https://azirona.com/pixel-printout/';
-            const watermarkX = offsetX + gridWidthPx;
+            const watermarkX = canvasWidth - marginPx;
             const watermarkY = offsetY - Math.floor(0.1 * dpi);
             ctx.fillText(watermarkText, watermarkX, watermarkY);
 
@@ -628,7 +635,7 @@
 
                 const paletteY = nameLineY - Math.floor(0.7 * dpi);
                 const paletteBoxSize = Math.floor(0.35 * dpi);
-                const paletteBoxSpacing = Math.floor(0.1 * dpi);
+                const paletteBoxSpacing = Math.floor(0.2 * dpi);
 
                 // Draw "Color Palette:" label
                 ctx.fillText('Color Palette:', offsetX, paletteY);
