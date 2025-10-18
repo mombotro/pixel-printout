@@ -637,12 +637,12 @@
                 const paletteBoxSize = Math.floor(0.35 * dpi);
                 const paletteBoxSpacing = Math.floor(0.2 * dpi);
 
-                // Draw "Color Palette:" label
-                ctx.fillText('Color Palette:', offsetX, paletteY);
+                // Draw "Color Palette:" label (at page edge)
+                ctx.fillText('Color Palette:', marginPx, paletteY);
 
                 // Calculate starting position for boxes (after label)
                 const labelWidth = ctx.measureText('Color Palette:').width;
-                const boxesStartX = offsetX + labelWidth + Math.floor(0.15 * dpi);
+                const boxesStartX = marginPx + labelWidth + Math.floor(0.15 * dpi);
 
                 // Draw empty palette boxes
                 ctx.strokeStyle = '#000000';
