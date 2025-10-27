@@ -181,16 +181,6 @@
             transform: translateY(-2px);
         }
 
-        .btn-danger {
-            background: #dc2626;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #b91c1c;
-            transform: translateY(-2px);
-        }
-
         .canvas-container {
             background: white;
             padding: 20px;
@@ -421,7 +411,6 @@
                         <button class="btn-primary" onclick="generateGrid()">Refresh</button>
                         <button class="btn-secondary" onclick="downloadGrid()">Download</button>
                         <button class="btn-secondary" onclick="printGrid()">Print</button>
-                        <button class="btn-danger" onclick="clearGrid()">Clear</button>
                     </div>
 
                     <div class="info">
@@ -777,12 +766,6 @@
 
         function printGrid() {
             window.print();
-        }
-
-        function clearGrid() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
         // Generate initial grid on load and when watermark loads
